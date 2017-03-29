@@ -75,21 +75,14 @@ public class Config {
                         }else if(TAG_ENTRY.equals(name)){
                             String key = parser.getAttributeValue(0);
                             String value = parser.nextText();
-                            switch (key){
-                                case "name":
-                                    config.setName(value);
-                                    break;
-                                case "url":
-                                    config.setUrl(value);
-                                    break;
-                                case "background":
-                                    config.setBackground(value);
-                                    break;
-                                case "icon":
-                                    config.setIcon(value);
-                                    break;
-                                default:
-                                    break;
+                            if(key.equals("name")){
+                                config.setName(value);
+                            }else if(key.equals("url")){
+                                config.setUrl(value);
+                            }else if(key.equals("background")){
+                                config.setBackground(value);
+                            }else if(key.equals("icon")){
+                                config.setIcon(value);
                             }
                         }
                         break;

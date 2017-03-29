@@ -1,8 +1,8 @@
 package cc.wxf.happygallery.ui;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,7 +14,7 @@ import cc.wxf.happygallery.R;
 import cc.wxf.happygallery.common.Config;
 import cc.wxf.happygallery.util.Util;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
