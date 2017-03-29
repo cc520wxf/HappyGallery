@@ -1,6 +1,7 @@
 package cc.wxf.happygallery.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -32,17 +33,20 @@ public class HomeActivity extends Activity {
                 ViewGroup itemViewGroup = (ViewGroup) horizontalViewGroup.getChildAt(j);
                 ImageView imageView = (ImageView) itemViewGroup.getChildAt(0);
                 TextView textView = (TextView) itemViewGroup.getChildAt(1);
-                Config config = configs.get(i * horizontalViewGroup.getChildCount() + j);
+                final Config config = configs.get(i * horizontalViewGroup.getChildCount() + j);
                 itemViewGroup.setBackgroundColor(Color.parseColor(config.getBackground()));
                 imageView.setImageResource(Util.getDrawableByName(this, config.getIcon()));
                 textView.setText(config.getName());
                 itemViewGroup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Intent intent = new Intent(HomeActivity.this, GalleryListActivity.class);
+                        intent.putExtra("Config", config);
+                        startActivity(intent);
                     }
                 });
             }
         }
     }
+
 }

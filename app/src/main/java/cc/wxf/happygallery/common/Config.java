@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.XmlResourceParser;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import cc.wxf.happygallery.R;
  * Created by zhangjiancheng on 16/10/21.
  */
 
-public class Config {
+public class Config implements Serializable{
     private static final String TAG_MAP = "map";
     private static final String TAG_ARRAY = "array";
     private static final String TAG_ENTRY = "entry";

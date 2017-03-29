@@ -27,6 +27,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.GalleryListActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+        </activity>
+
     </application>
 
 </manifest>
