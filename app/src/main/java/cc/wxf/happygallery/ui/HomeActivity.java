@@ -1,7 +1,6 @@
 package cc.wxf.happygallery.ui;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import cc.wxf.happygallery.R;
 import cc.wxf.happygallery.common.Config;
 import cc.wxf.happygallery.util.Util;
 
-public class HomeActivity extends ImmerseActivity {
+public class HomeActivity extends FullScreenActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,7 @@ public class HomeActivity extends ImmerseActivity {
                 ImageView imageView = (ImageView) itemViewGroup.getChildAt(0);
                 TextView textView = (TextView) itemViewGroup.getChildAt(1);
                 final Config config = configs.get(i * horizontalViewGroup.getChildCount() + j);
-                itemViewGroup.setBackgroundColor(Color.parseColor(config.getBackground()));
+                itemViewGroup.setBackgroundResource(Util.getDrawableByName(this, config.getBackground()));
                 imageView.setImageResource(Util.getDrawableByName(this, config.getIcon()));
                 textView.setText(config.getName());
                 itemViewGroup.setOnClickListener(new View.OnClickListener() {
