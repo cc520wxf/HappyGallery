@@ -1,4 +1,4 @@
-package cc.wxf.happygallery.common;
+package cc.wxf.happygallery.bean;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
@@ -24,7 +24,7 @@ public class Config implements Serializable{
     private String name;
     private String url;
     private String icon;
-    private Bitmap bitmap;
+    private transient Bitmap bitmap;
 
     public Bitmap getBitmap() {
         return bitmap;

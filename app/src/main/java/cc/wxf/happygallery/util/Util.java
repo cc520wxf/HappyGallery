@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 
+import cc.wxf.happygallery.bean.Config;
+
 /**
  * Created by chenchen on 2017/3/29.
  */
@@ -90,5 +92,11 @@ public class Util {
                 Animation.RELATIVE_TO_SELF, 0.5f);
         zoomOut.setDuration(200);
         animView.startAnimation(zoomOut);
+    }
+
+    public static String getListUrl(Config config, int page){
+        StringBuilder sb = new StringBuilder(config.getUrl());
+        sb.append("?offset=").append(30 * (page - 1)).append("&order=created&math=").append(Math.random());
+        return sb.toString();
     }
 }

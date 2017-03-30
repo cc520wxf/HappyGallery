@@ -12,7 +12,7 @@ import java.util.List;
 
 import cc.wxf.happygallery.R;
 import cc.wxf.happygallery.adapter.GalleryAdapter;
-import cc.wxf.happygallery.common.Config;
+import cc.wxf.happygallery.bean.Config;
 import cc.wxf.happygallery.util.GalleryPageTransformer;
 import cc.wxf.happygallery.util.Util;
 
