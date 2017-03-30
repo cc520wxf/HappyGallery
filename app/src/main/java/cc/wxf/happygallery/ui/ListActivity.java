@@ -2,10 +2,14 @@ package cc.wxf.happygallery.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
+
+import java.util.List;
 
 import cc.wxf.happygallery.R;
 import cc.wxf.happygallery.bean.Config;
+import cc.wxf.happygallery.bean.GalleryPage;
 import cc.wxf.happygallery.manager.ListManager;
 
 /**
@@ -27,8 +31,10 @@ public class ListActivity extends ImmerseActivity {
     private void initParse() {
         ListManager.getInstance().parse(config, 1, new ListManager.OnParseListListener() {
             @Override
-            public void onSuccess() {
-
+            public void onSuccess(List<GalleryPage> galleryPages) {
+                for(GalleryPage page : galleryPages){
+                    Log.i("ListActivty", page.toString());
+                }
             }
 
             @Override

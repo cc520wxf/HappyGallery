@@ -3,7 +3,10 @@ package cc.wxf.happygallery.manager;
 import android.os.Handler;
 import android.os.Message;
 
-import cc.wxf.happygallery.ParseListThread;
+import java.util.List;
+
+import cc.wxf.happygallery.bean.GalleryPage;
+import cc.wxf.happygallery.thread.ParseListThread;
 import cc.wxf.happygallery.bean.Config;
 
 /**
@@ -13,7 +16,6 @@ import cc.wxf.happygallery.bean.Config;
 public class ListManager {
 
     public static String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.104 Safari/537.36 Core/1.53.2141.400 QQBrowser/9.5.10219.400";
-    public static String CONTENT_TYPE = "application/x-javascript";
     public static int TIME_OUT = 10 * 1000;
 
     private static ListManager instance;
@@ -34,7 +36,7 @@ public class ListManager {
         int ERROR_NETWORK = 1001;
         int ERROR_SERVER = 1002;
 
-        void onSuccess();
+        void onSuccess(List<GalleryPage> galleryPages);
         void onError(int errorCode);
     }
 
@@ -42,10 +44,9 @@ public class ListManager {
         Handler handler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
-                super.handleMessage(msg);
                 if(msg.what == OnParseListListener.SUCCESS){
                     if(listener != null){
-                        listener.onSuccess();
+                        listener.onSuccess((List<GalleryPage>) msg.obj);
                     }
                 }else{
                     if(listener != null){

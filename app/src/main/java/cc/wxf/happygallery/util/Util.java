@@ -15,6 +15,9 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import cc.wxf.happygallery.bean.Config;
 
 /**
@@ -51,16 +54,16 @@ public class Util {
         //这里取矩形渐变区和图片的交集
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
         gCanvas.drawRect(0, sourceBitmap.getHeight() + 50, sourceBitmap.getWidth(), groupbBitmap.getHeight(), paint);
-        if(sourceBitmap != null && !sourceBitmap.isRecycled()){
+        if (sourceBitmap != null && !sourceBitmap.isRecycled()) {
             sourceBitmap.recycle();
         }
-        if(inverseBitmap != null && !inverseBitmap.isRecycled()){
+        if (inverseBitmap != null && !inverseBitmap.isRecycled()) {
             inverseBitmap.recycle();
         }
         return groupbBitmap;
     }
 
-    public static void startZoomInAnim(final View animView, final float multiple){
+    public static void startZoomInAnim(final View animView, final float multiple) {
         ScaleAnimation zoomIn = new ScaleAnimation(1.0f, 1.0f * multiple, 1.0f, 1.0f * multiple,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
@@ -86,7 +89,7 @@ public class Util {
         animView.startAnimation(zoomIn);
     }
 
-    private static void startZoomOutAnim(final View animView, final float multiple){
+    private static void startZoomOutAnim(final View animView, final float multiple) {
         ScaleAnimation zoomOut = new ScaleAnimation(1.0f * multiple, 1.0f, 1.0f * multiple, 1.0f,
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF, 0.5f);
@@ -94,9 +97,45 @@ public class Util {
         animView.startAnimation(zoomOut);
     }
 
-    public static String getListUrl(Config config, int page){
+    public static String getListUrl(Config config, int page) {
         StringBuilder sb = new StringBuilder(config.getUrl());
         sb.append("?offset=").append(30 * (page - 1)).append("&order=created&math=").append(Math.random());
         return sb.toString();
+    }
+
+    public static String format(String source) {
+        source = source.substring(0, source.indexOf("<"));
+        return unicode2String(source);
+    }
+
+    public static String filter(String source) {
+        String regEx = "[\\\"\\\\]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(source);
+        return m.replaceAll("").trim();
+    }
+
+    public static String unicode2String(String unicode) {
+        StringBuffer string = new StringBuffer();
+        String[] hex = unicode.split("\\\\u");
+        for (int i = 1; i < hex.length; i++) {
+            try{
+                if(hex[i].length() == 4){
+                    // 转换出每一个代码点
+                    int data = Integer.parseInt(hex[i], 16);
+                    // 追加成string
+                    string.append((char) data);
+                }else if(hex[i].length() > 4){
+                    String first = hex[i].substring(0, 4);
+                    String second = hex[i].substring(4, hex[i].length());
+                    int data = Integer.parseInt(first, 16);
+                    string.append((char) data);
+                    string.append(second);
+                }
+            }catch (Exception e){
+                string.append(hex[i]);
+            }
+        }
+        return string.toString();
     }
 }
