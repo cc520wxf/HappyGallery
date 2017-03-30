@@ -3,42 +3,36 @@
     <map>
         <entry key="name">今日囧图</entry>
         <entry key="url">http://tu.duowan.com/tag/5037.html</entry>
-        <entry key="background">sel_launch1</entry>
         <entry key="icon">launch_icon1</entry>
     </map>
 
     <map>
         <entry key="name">搞笑GIF</entry>
         <entry key="url">http://tu.duowan.com/m/bxgif</entry>
-        <entry key="background">sel_launch2</entry>
         <entry key="icon">launch_icon2</entry>
     </map>
 
     <map>
         <entry key="name">美女图片</entry>
         <entry key="url">http://tu.duowan.com/m/meinv</entry>
-        <entry key="background">sel_launch3</entry>
         <entry key="icon">launch_icon3</entry>
     </map>
 
     <map>
         <entry key="name">吐槽囧图</entry>
         <entry key="url">http://tu.duowan.com/m/tucao</entry>
-        <entry key="background">sel_launch4</entry>
         <entry key="icon">launch_icon4</entry>
     </map>
 
     <map>
         <entry key="name">冷知识</entry>
         <entry key="url">http://tu.duowan.com/tag/20721.html</entry>
-        <entry key="background">sel_launch5</entry>
         <entry key="icon">launch_icon5</entry>
     </map>
 
     <map>
         <entry key="name">冷笑话</entry>
         <entry key="url">http://tu.duowan.com/tag/25047.html</entry>
-        <entry key="background">sel_launch6</entry>
         <entry key="icon">launch_icon6</entry>
     </map>
 

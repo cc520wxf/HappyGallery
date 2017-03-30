@@ -2,6 +2,7 @@ package cc.wxf.happygallery.common;
 
 import android.content.Context;
 import android.content.res.XmlResourceParser;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cc.wxf.happygallery.R;
+import cc.wxf.happygallery.util.Util;
 
 /**
  * Created by zhangjiancheng on 16/10/21.
@@ -21,15 +23,15 @@ public class Config implements Serializable{
 
     private String name;
     private String url;
-    private String background;
     private String icon;
+    private Bitmap bitmap;
 
-    public String getBackground() {
-        return background;
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 
-    public void setBackground(String background) {
-        this.background = background;
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
     public String getIcon() {
@@ -80,10 +82,10 @@ public class Config implements Serializable{
                                 config.setName(value);
                             }else if(key.equals("url")){
                                 config.setUrl(value);
-                            }else if(key.equals("background")){
-                                config.setBackground(value);
                             }else if(key.equals("icon")){
                                 config.setIcon(value);
+                                //将处理过的Bitmap放入
+                                config.setBitmap(Util.getReverseBitmapById(Util.getDrawableByName(context, value), context));
                             }
                         }
                         break;
