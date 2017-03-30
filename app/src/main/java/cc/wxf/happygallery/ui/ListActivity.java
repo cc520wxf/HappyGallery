@@ -3,6 +3,7 @@ package cc.wxf.happygallery.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -19,13 +20,20 @@ import cc.wxf.happygallery.manager.ListManager;
 public class ListActivity extends ImmerseActivity {
 
     private Config config;
+    private TextView titleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         initConfig();
-        initParse();
+        initTitle();
+//        initParse();
+    }
+
+    private void initTitle() {
+        titleView = (TextView) findViewById(R.id.title);
+        titleView.setText(config == null ? getString(R.string.app_name) : config.getName());
     }
 
     private void initParse() {
