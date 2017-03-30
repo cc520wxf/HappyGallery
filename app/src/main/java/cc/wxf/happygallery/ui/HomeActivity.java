@@ -1,6 +1,5 @@
 package cc.wxf.happygallery.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,7 +14,7 @@ import cc.wxf.happygallery.R;
 import cc.wxf.happygallery.common.Config;
 import cc.wxf.happygallery.util.Util;
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends ImmerseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,7 @@ public class HomeActivity extends Activity {
                 itemViewGroup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(HomeActivity.this, GalleryListActivity.class);
+                        Intent intent = new Intent(HomeActivity.this, ListActivity.class);
                         intent.putExtra("Config", config);
                         startActivity(intent);
                     }

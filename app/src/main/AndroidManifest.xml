@@ -28,7 +28,7 @@
         </activity>
 
         <activity
-            android:name=".ui.GalleryListActivity"
+            android:name=".ui.ListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">

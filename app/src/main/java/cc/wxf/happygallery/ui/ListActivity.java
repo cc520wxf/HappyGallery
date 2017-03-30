@@ -1,6 +1,5 @@
 package cc.wxf.happygallery.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,7 +10,7 @@ import cc.wxf.happygallery.common.Config;
  * Created by cc520wxf on 2017/3/29.
  */
 
-public class GalleryListActivity extends Activity {
+public class ListActivity extends ImmerseActivity {
 
     private Config config;
 
