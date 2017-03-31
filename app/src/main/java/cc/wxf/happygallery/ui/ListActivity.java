@@ -25,8 +25,9 @@ public class ListActivity extends ImmerseActivity {
 
     private Config config;
     private TextView titleView;
-    private View loadView;
+    private View loadMoreView;
     private RecyclerView recyclerView;
+    private View loadingView;
     private ListAdapter adapter;
     private List<GalleryPage> galleryPages = new ArrayList<GalleryPage>();
 
@@ -43,10 +44,11 @@ public class ListActivity extends ImmerseActivity {
     }
 
     private void initLoading() {
-        loadView = findViewById(R.id.loading);
+        loadingView = findViewById(R.id.loadingView);
     }
 
     private void initRecyclerView() {
+        loadMoreView = findViewById(R.id.loadMoreView);
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         //设置瀑布流布局
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -64,7 +66,7 @@ public class ListActivity extends ImmerseActivity {
                     int[] result = layoutManager.findLastVisibleItemPositions(null);
                     if (Math.max(result[0], result[1]) == recyclerView.getAdapter().getItemCount() - 1) {
                         //触发加载更多
-                        loadView.setVisibility(View.VISIBLE);
+                        loadMoreView.setVisibility(View.VISIBLE);
                         parseList();
                     }
                 }
@@ -87,7 +89,9 @@ public class ListActivity extends ImmerseActivity {
         ListManager.getInstance().parse(config, new ListManager.OnParseListListener() {
             @Override
             public void onSuccess(List<GalleryPage> pages) {
-                loadView.setVisibility(View.GONE);
+                loadingView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                loadMoreView.setVisibility(View.GONE);
                 galleryPages.addAll(pages);
                 adapter.notifyDataSetChanged();
             }

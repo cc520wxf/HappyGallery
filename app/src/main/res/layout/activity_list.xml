@@ -48,10 +48,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:visibility="gone"
         />
 
     <LinearLayout
-        android:id="@+id/loading"
+        android:id="@+id/loadMoreView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -72,4 +73,11 @@
             android:textColor="#ffffff"
             android:textSize="15sp" />
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/loadingView"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:indeterminateBehavior="repeat" />
 </LinearLayout>
