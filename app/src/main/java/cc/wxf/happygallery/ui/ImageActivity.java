@@ -53,6 +53,16 @@ public class ImageActivity extends ImmerseActivity {
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         // 设置默认编码
         settings.setDefaultTextEncodingName("utf-8");
+        // 设置背景透明
+        webView.setBackgroundColor(0);
+        webView.setBackgroundResource(R.color.translate);
+        webView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ImageManager.getInstance().downloadImage(ImageActivity.this, webView);
+                return true;
+            }
+        });
     }
 
     private void initLoading() {

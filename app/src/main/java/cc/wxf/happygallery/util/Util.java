@@ -11,15 +11,19 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
+import android.os.Environment;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cc.wxf.happygallery.R;
 import cc.wxf.happygallery.bean.Config;
 import cc.wxf.happygallery.bean.GalleryPage;
+import cc.wxf.happygallery.common.GalleryApplication;
 
 /**
  * Created by chenchen on 2017/3/29.
@@ -149,5 +153,13 @@ public class Util {
         }catch (Exception e){
             return url;
         }
+    }
+
+    public static File getDownloadDir(){
+        File dir = new File(Environment.getExternalStorageDirectory(), GalleryApplication.getInstance().getString(R.string.app_name));
+        if(!dir.exists()){
+            dir.mkdirs();
+        }
+        return dir;
     }
 }

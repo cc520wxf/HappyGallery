@@ -1,21 +1,28 @@
 package cc.wxf.happygallery.manager;
 
+import android.app.DownloadManager;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.webkit.MimeTypeMap;
+import android.webkit.WebView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+import cc.wxf.happygallery.R;
 import cc.wxf.happygallery.bean.GalleryItem;
 import cc.wxf.happygallery.bean.GalleryPage;
 import cc.wxf.happygallery.thread.ParsePageThread;
+import cc.wxf.happygallery.util.Util;
 
 /**
  * Created by chenchen on 2017/3/31.
@@ -105,5 +112,36 @@ public class ImageManager {
         }catch (Exception e){
             return null;
         }
+    }
+
+    private String getImageUrlByLongPress(WebView webView){
+        WebView.HitTestResult result = webView.getHitTestResult();
+        int type = result.getType();
+        if(type == WebView.HitTestResult.IMAGE_TYPE){
+            return result.getExtra();
+        }else{
+            return null;
+        }
+    }
+
+    public void downloadImage(Context context, WebView webView){
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        String url = getImageUrlByLongPress(webView);
+        if(url == null){
+            return;
+        }
+        Uri resource = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(resource);
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
+        request.setAllowedOverRoaming(false);
+        // 设置文件类型
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        String mimeString = mimeTypeMap.getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(url));
+        request.setMimeType(mimeString);
+        request.setVisibleInDownloadsUi(false);
+        // sdcard的目录下的download文件夹
+        request.setDestinationUri(Uri.fromFile(new File(Util.getDownloadDir(), System.currentTimeMillis() + ".jpg")));
+        request.setTitle(context.getResources().getString(R.string.app_name));
+        downloadManager.enqueue(request);
     }
 }
