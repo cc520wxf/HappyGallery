@@ -19,6 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cc.wxf.happygallery.bean.Config;
+import cc.wxf.happygallery.bean.GalleryPage;
 
 /**
  * Created by chenchen on 2017/3/29.
@@ -137,5 +138,16 @@ public class Util {
             }
         }
         return string.toString();
+    }
+
+    public static String getPageUrl(GalleryPage galleryPage, int page){
+        String url = galleryPage.getUrl();
+        try{
+            StringBuilder sb = new StringBuilder(url.replace("gallery", "scroll"));
+            sb.insert(sb.lastIndexOf("."), "/" + page);
+            return sb.toString();
+        }catch (Exception e){
+            return url;
+        }
     }
 }

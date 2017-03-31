@@ -1,6 +1,7 @@
 package cc.wxf.happygallery.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import cc.wxf.happygallery.R;
 import cc.wxf.happygallery.bean.GalleryPage;
+import cc.wxf.happygallery.ui.ImageActivity;
 
 /**
  * Created by chenchen on 2017/3/31.
@@ -38,9 +40,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        GalleryPage galleryPage = galleryPages.get(position);
+        final GalleryPage galleryPage = galleryPages.get(position);
         Picasso.with(context).load(galleryPage.getIconUrl()).placeholder(R.drawable.default_icon).error(R.drawable.default_icon).into(holder.img);
         holder.txt.setText(galleryPage.getTitle());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ImageActivity.class);
+                intent.putExtra("GalleryPage", galleryPage);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
