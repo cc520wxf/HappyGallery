@@ -1,0 +1,19 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+		<style>
+			body{ 
+				text-align:center;
+				font-size:33px;
+			} 
+			.div{ 
+				margin:0 auto; 
+				width:50%; 
+				border:1px solid #F00
+			} 
+		</style>
+	</head>
+	<body>
+
+	</body>
+</html>

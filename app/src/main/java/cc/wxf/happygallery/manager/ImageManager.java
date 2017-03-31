@@ -1,8 +1,16 @@
 package cc.wxf.happygallery.manager;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import cc.wxf.happygallery.bean.GalleryItem;
@@ -55,5 +63,47 @@ public class ImageManager {
             }
         };
         new ParsePageThread(page, handler).start();
+    }
+
+    private String readHTML(Context context){
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open("templete")));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null){
+                sb.append(line);
+            }
+            return sb.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String createHTML(Context context, List<GalleryItem> galleryItems){
+        String html = readHTML(context);
+        if(html == null){
+            return null;
+        }
+        Document document = Jsoup.parse(html);
+        if(document == null){
+            return null;
+        }
+        try{
+            Element body = document.body();
+            //生成div
+            for(GalleryItem item : galleryItems){
+                Element div = body.appendElement("div");
+                Element img = div.appendElement("img");
+                img.attr("src", item.getImgUrl());
+                div.appendElement("br");
+                Element p = div.appendElement("p");
+                p.text(item.getTitle());
+                body.appendElement("br");
+            }
+            return document.toString();
+        }catch (Exception e){
+            return null;
+        }
     }
 }

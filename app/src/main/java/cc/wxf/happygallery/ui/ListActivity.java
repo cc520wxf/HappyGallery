@@ -24,7 +24,6 @@ import cc.wxf.happygallery.manager.ListManager;
 public class ListActivity extends ImmerseActivity {
 
     private Config config;
-    private TextView titleView;
     private View loadMoreView;
     private RecyclerView recyclerView;
     private View loadingView;
@@ -75,7 +74,7 @@ public class ListActivity extends ImmerseActivity {
     }
 
     private void initTitle() {
-        titleView = (TextView) findViewById(R.id.title);
+        TextView titleView = (TextView) findViewById(R.id.title);
         titleView.setText(config == null ? getString(R.string.app_name) : config.getName());
         findViewById(R.id.back_txt).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +85,10 @@ public class ListActivity extends ImmerseActivity {
     }
 
     private void parseList() {
+        if(config == null){
+            Toast.makeText(ListActivity.this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+            return;
+        }
         ListManager.getInstance().parse(config, new ListManager.OnParseListListener() {
             @Override
             public void onSuccess(List<GalleryPage> pages) {

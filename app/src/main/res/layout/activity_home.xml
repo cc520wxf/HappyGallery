@@ -7,7 +7,7 @@
     android:clipToPadding="true"
     android:fitsSystemWindows="true"
     android:gravity="center"
-    android:background="@drawable/home_bg"
+    android:background="@drawable/default_bg"
     android:orientation="vertical">
 
     <TextView
