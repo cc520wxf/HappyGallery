@@ -25,6 +25,7 @@ public class ListActivity extends ImmerseActivity {
 
     private Config config;
     private TextView titleView;
+    private View loadView;
     private RecyclerView recyclerView;
     private ListAdapter adapter;
     private List<GalleryPage> galleryPages = new ArrayList<GalleryPage>();
@@ -35,16 +36,40 @@ public class ListActivity extends ImmerseActivity {
         setContentView(R.layout.activity_list);
         initConfig();
         initTitle();
+        initLoading();
         initRecyclerView();
-        parseList(1);
+        ListManager.getInstance().setCurrentPage(1);
+        parseList();
+    }
+
+    private void initLoading() {
+        loadView = findViewById(R.id.loading);
     }
 
     private void initRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        //设置瀑布流布局
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        //设置Adapter
         adapter = new ListAdapter(this, galleryPages);
         recyclerView.setAdapter(adapter);
+        //设置padding
         recyclerView.addItemDecoration(adapter.new SpacesItemDecoration(5));
+        //设置滑动到底部监听器
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int[] result = layoutManager.findLastVisibleItemPositions(null);
+                    if (Math.max(result[0], result[1]) == recyclerView.getAdapter().getItemCount() - 1) {
+                        //触发加载更多
+                        loadView.setVisibility(View.VISIBLE);
+                        parseList();
+                    }
+                }
+            }
+        });
     }
 
     private void initTitle() {
@@ -58,10 +83,11 @@ public class ListActivity extends ImmerseActivity {
         });
     }
 
-    private void parseList(int page) {
-        ListManager.getInstance().parse(config, page, new ListManager.OnParseListListener() {
+    private void parseList() {
+        ListManager.getInstance().parse(config, new ListManager.OnParseListListener() {
             @Override
             public void onSuccess(List<GalleryPage> pages) {
+                loadView.setVisibility(View.GONE);
                 galleryPages.addAll(pages);
                 adapter.notifyDataSetChanged();
             }

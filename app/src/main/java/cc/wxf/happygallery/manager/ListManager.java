@@ -20,6 +20,8 @@ public class ListManager {
 
     private static ListManager instance;
 
+    private int currentPage = 1;
+
     private ListManager() {
     }
 
@@ -40,7 +42,15 @@ public class ListManager {
         void onError(int errorCode);
     }
 
-    public void parse(Config config, int page, final OnParseListListener listener){
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public void parse(Config config, final OnParseListListener listener){
         Handler handler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
@@ -55,6 +65,6 @@ public class ListManager {
                 }
             }
         };
-        new ParseListThread(config, handler, page).start();
+        new ParseListThread(config, handler, currentPage++).start();
     }
 }
