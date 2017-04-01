@@ -92,6 +92,11 @@ public class OfflineManager {
         return null;
     }
 
+    public void fusionGalleryPage(List<GalleryPage> source, List<GalleryPage> dest){
+        dest.removeAll(source);
+        source.addAll(dest);
+    }
+
     public List<GalleryItem> queryAllGalleryItem(GalleryPage page) {
         try {
             Dao dao = DatabaseHelper.getInstance().getDao(GalleryItem.class);
@@ -151,4 +156,8 @@ public class OfflineManager {
         return null;
     }
 
+    public void fusionGalleryItem(List<GalleryItem> source, List<GalleryItem> dest){
+        dest.removeAll(source);
+        source.addAll(dest);
+    }
 }

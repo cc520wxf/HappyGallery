@@ -8,6 +8,7 @@ import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cc.wxf.happygallery.R;
@@ -16,6 +17,7 @@ import cc.wxf.happygallery.bean.GalleryPage;
 import cc.wxf.happygallery.manager.DialogManager;
 import cc.wxf.happygallery.manager.ImageManager;
 import cc.wxf.happygallery.manager.OfflineManager;
+import cc.wxf.happygallery.util.Util;
 
 /**
  * Created by chenchen on 2017/3/31.
@@ -26,6 +28,7 @@ public class ImageActivity extends ImmerseActivity {
     private GalleryPage galleryPage;
     private View loadingView;
     private WebView webView;
+    List<GalleryItem> galleryItems = new ArrayList<GalleryItem>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,28 +100,42 @@ public class ImageActivity extends ImmerseActivity {
             Toast.makeText(ImageActivity.this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             return;
         }
-        ImageManager.getInstance().parsePage(galleryPage, new ImageManager.OnParsePageListener() {
-            @Override
-            public void onSuccess(List<GalleryItem> galleryItems) {
-                loadingView.setVisibility(View.GONE);
-                webView.setVisibility(View.VISIBLE);
-                //插入数据库
-                OfflineManager.getInstance().saveGalleryItem(galleryPage, galleryItems);
-                String html = ImageManager.getInstance().createHTML(ImageActivity.this, galleryItems);
-                webView.loadData(html, "text/html; charset=UTF-8", "utf-8");
-            }
+        if(Util.isCollectionEmpty(galleryItems)){
+            //本地数据库没有，则网络获取
+            ImageManager.getInstance().parsePage(galleryPage, new ImageManager.OnParsePageListener() {
+                @Override
+                public void onSuccess(List<GalleryItem> items) {
+                    loadingView.setVisibility(View.GONE);
+                    webView.setVisibility(View.VISIBLE);
+                    //将当前集合和最新集合取并集
+                    OfflineManager.getInstance().fusionGalleryItem(galleryItems, items);
+                    String html = ImageManager.getInstance().createHTML(ImageActivity.this, galleryItems);
+                    webView.loadData(html, "text/html; charset=UTF-8", "utf-8");
+                    //插入数据库
+                    OfflineManager.getInstance().saveGalleryItem(galleryPage, items);
+                }
 
-            @Override
-            public void onError(int errorCode) {
-                Toast.makeText(ImageActivity.this, String.format(getString(R.string.parse_error), errorCode), Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onError(int errorCode) {
+                    Toast.makeText(ImageActivity.this, String.format(getString(R.string.parse_error), errorCode), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            //本地数据库有，则直接显示
+            loadingView.setVisibility(View.GONE);
+            webView.setVisibility(View.VISIBLE);
+            String html = ImageManager.getInstance().createHTML(ImageActivity.this, galleryItems);
+            webView.loadData(html, "text/html; charset=UTF-8", "utf-8");
+        }
     }
 
     private void initGalleryPage() {
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra("GalleryPage")){
             galleryPage = (GalleryPage) intent.getSerializableExtra("GalleryPage");
+        }
+        if(galleryPage != null){
+            galleryItems.addAll(OfflineManager.getInstance().queryAllGalleryItem(galleryPage));
         }
     }
 }

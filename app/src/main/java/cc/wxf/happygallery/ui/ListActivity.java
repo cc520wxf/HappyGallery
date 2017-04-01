@@ -17,6 +17,7 @@ import cc.wxf.happygallery.bean.Config;
 import cc.wxf.happygallery.bean.GalleryPage;
 import cc.wxf.happygallery.manager.ListManager;
 import cc.wxf.happygallery.manager.OfflineManager;
+import cc.wxf.happygallery.util.Util;
 
 /**
  * Created by cc520wxf on 2017/3/29.
@@ -90,29 +91,43 @@ public class ListActivity extends ImmerseActivity {
             Toast.makeText(ListActivity.this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
             return;
         }
-        ListManager.getInstance().parse(config, new ListManager.OnParseListListener() {
-            @Override
-            public void onSuccess(List<GalleryPage> pages) {
-                loadingView.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
-                loadMoreView.setVisibility(View.GONE);
-                galleryPages.addAll(pages);
-                adapter.notifyDataSetChanged();
-                //插入数据库
-                OfflineManager.getInstance().saveGalleryPage(config, pages);
-            }
+        if(Util.isCollectionEmpty(galleryPages)){
+            //为空，则网络获取
+            ListManager.getInstance().parse(config, new ListManager.OnParseListListener() {
+                @Override
+                public void onSuccess(List<GalleryPage> pages) {
+                    loadingView.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    loadMoreView.setVisibility(View.GONE);
+                    //将当前集合和最新集合取并集
+                    OfflineManager.getInstance().fusionGalleryPage(galleryPages, pages);
+                    adapter.notifyDataSetChanged();
+                    //插入数据库
+                    OfflineManager.getInstance().saveGalleryPage(config, pages);
+                }
 
-            @Override
-            public void onError(int errorCode) {
-                Toast.makeText(ListActivity.this, String.format(getString(R.string.parse_error), errorCode), Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onError(int errorCode) {
+                    Toast.makeText(ListActivity.this, String.format(getString(R.string.parse_error), errorCode), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            //不为空，则加载本地数据库
+            loadingView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            loadMoreView.setVisibility(View.GONE);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void initConfig() {
         Intent intent = getIntent();
         if(intent != null && intent.hasExtra("Config")){
             config = (Config) intent.getSerializableExtra("Config");
+        }
+        //从数据库中查找离线
+        if(config != null){
+            galleryPages.addAll(OfflineManager.getInstance().queryAllGalleryPage(config));
         }
     }
 }
