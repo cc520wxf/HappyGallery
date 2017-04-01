@@ -50,7 +50,7 @@ public class HomeActivity extends ImmerseActivity {
         });
         viewPager.setPageTransformer(true, new GalleryPageTransformer());
         viewPager.setAdapter(new GalleryAdapter(this, configs));
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

@@ -98,12 +98,8 @@ public class ListActivity extends ImmerseActivity {
                 loadMoreView.setVisibility(View.GONE);
                 galleryPages.addAll(pages);
                 adapter.notifyDataSetChanged();
-                //保存Config外链
-                for(GalleryPage item : pages){
-                    item.setConfigId(config.getId());
-                }
                 //插入数据库
-                OfflineManager.getInstance().saveGalleryPage(pages);
+                OfflineManager.getInstance().saveGalleryPage(config, pages);
             }
 
             @Override
