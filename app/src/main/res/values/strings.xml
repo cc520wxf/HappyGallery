@@ -14,4 +14,5 @@
     <string name="dialog_download_content">要下载该图片到本地吗</string>
     <string name="dialog_download_confirm">下载</string>
     <string name="dialog_download_cancle">取消</string>
+    <string name="operate_save_batch">一键保存</string>
 </resources>

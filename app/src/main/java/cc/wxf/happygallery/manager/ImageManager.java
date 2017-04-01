@@ -24,6 +24,8 @@ import cc.wxf.happygallery.bean.GalleryPage;
 import cc.wxf.happygallery.thread.ParsePageThread;
 import cc.wxf.happygallery.util.Util;
 
+import static cc.wxf.happygallery.bean.GalleryPage.$.url;
+
 /**
  * Created by chenchen on 2017/3/31.
  */
@@ -131,6 +133,22 @@ public class ImageManager {
             return;
         }
         Uri resource = Uri.parse(url);
+        download(context, downloadManager, resource, new File(Util.getDownloadDir(), System.currentTimeMillis() + ".jpg"));
+    }
+
+    public void downloadBatchImage(Context context, GalleryPage page, List<GalleryItem> images){
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        for(GalleryItem image : images){
+            Uri resource = Uri.parse(image.getImgUrl());
+            File dir = new File(Util.getDownloadDir(), page.getTitle());
+            if(!dir.exists()){
+                dir.mkdirs();
+            }
+            download(context, downloadManager, resource, new File(dir, System.currentTimeMillis() + ".jpg"));
+        }
+    }
+
+    private void download(Context context, DownloadManager downloadManager, Uri resource, File destFile){
         DownloadManager.Request request = new DownloadManager.Request(resource);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setAllowedOverRoaming(false);
@@ -140,7 +158,7 @@ public class ImageManager {
         request.setMimeType(mimeString);
         request.setVisibleInDownloadsUi(false);
         // sdcard的目录下的download文件夹
-        request.setDestinationUri(Uri.fromFile(new File(Util.getDownloadDir(), System.currentTimeMillis() + ".jpg")));
+        request.setDestinationUri(Uri.fromFile(destFile));
         request.setTitle(context.getResources().getString(R.string.app_name));
         downloadManager.enqueue(request);
     }

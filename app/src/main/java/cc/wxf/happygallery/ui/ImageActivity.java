@@ -93,6 +93,16 @@ public class ImageActivity extends ImmerseActivity {
                 finish();
             }
         });
+        findViewById(R.id.operate).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(galleryPage != null && !Util.isCollectionEmpty(galleryItems)){
+                    ImageManager.getInstance().downloadBatchImage(ImageActivity.this, galleryPage, galleryItems);
+                }else{
+                    Toast.makeText(ImageActivity.this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void initParse() {
