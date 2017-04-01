@@ -13,6 +13,7 @@ import java.util.List;
 import cc.wxf.happygallery.R;
 import cc.wxf.happygallery.bean.GalleryItem;
 import cc.wxf.happygallery.bean.GalleryPage;
+import cc.wxf.happygallery.manager.DialogManager;
 import cc.wxf.happygallery.manager.ImageManager;
 
 /**
@@ -59,7 +60,17 @@ public class ImageActivity extends ImmerseActivity {
         webView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                ImageManager.getInstance().downloadImage(ImageActivity.this, webView);
+                DialogManager.getInstance().showDownloadDialog(ImageActivity.this, new DialogManager.Callback() {
+                    @Override
+                    public void confirm() {
+                        ImageManager.getInstance().downloadImage(ImageActivity.this, webView);
+                    }
+
+                    @Override
+                    public void cancle() {
+                        //do nothing
+                    }
+                });
                 return true;
             }
         });

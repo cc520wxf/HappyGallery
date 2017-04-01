@@ -1,6 +1,6 @@
 package cc.wxf.happygallery.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import java.util.List;
 
 import cc.wxf.happygallery.bean.Config;
+import cc.wxf.happygallery.manager.DialogManager;
 import cc.wxf.happygallery.ui.ListActivity;
+import cc.wxf.happygallery.util.Util;
 
 /**
  * Created by chenchen on 2017/3/30.
@@ -18,11 +20,11 @@ import cc.wxf.happygallery.ui.ListActivity;
 
 public class GalleryAdapter extends PagerAdapter {
 
-    private Context context;
+    private Activity activity;
     private List<Config> configs;
 
-    public GalleryAdapter(Context context, List<Config> configs) {
-        this.context = context;
+    public GalleryAdapter(Activity activity, List<Config> configs) {
+        this.activity = activity;
         this.configs = configs;
     }
 
@@ -38,14 +40,30 @@ public class GalleryAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        ImageView imageView = new ImageView(context);
+        ImageView imageView = new ImageView(activity);
         imageView.setImageBitmap(configs.get(position).getBitmap());
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ListActivity.class);
-                intent.putExtra("Config", configs.get(position));
-                context.startActivity(intent);
+                if(!Util.isWifiConnection(activity)){
+                    DialogManager.getInstance().showWifiConfirmDialog(activity, new DialogManager.Callback() {
+                        @Override
+                        public void confirm() {
+                            Intent intent = new Intent(activity, ListActivity.class);
+                            intent.putExtra("Config", configs.get(position));
+                            activity.startActivity(intent);
+                        }
+
+                        @Override
+                        public void cancle() {
+                            activity.finish();
+                        }
+                    });
+                }else{
+                    Intent intent = new Intent(activity, ListActivity.class);
+                    intent.putExtra("Config", configs.get(position));
+                    activity.startActivity(intent);
+                }
             }
         });
         container.addView(imageView);
