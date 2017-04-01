@@ -1,0 +1,144 @@
+package cc.wxf.happygallery.manager;
+
+import android.util.Log;
+
+import com.j256.ormlite.dao.Dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import cc.wxf.happygallery.bean.GalleryItem;
+import cc.wxf.happygallery.bean.GalleryPage;
+import cc.wxf.happygallery.common.DatabaseHelper;
+import cc.wxf.happygallery.util.Util;
+
+/**
+ * Created by chenchen on 2017/4/1.
+ */
+
+public class OfflineManager {
+
+    private static OfflineManager instance;
+
+    private OfflineManager() {
+    }
+
+    public static OfflineManager getInstance() {
+        if (instance == null) {
+            instance = new OfflineManager();
+        }
+        return instance;
+    }
+
+    public List<GalleryPage> queryAllGalleryPage() {
+        try {
+            Dao dao = DatabaseHelper.getInstance().getDao(GalleryPage.class);
+            return dao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void saveGalleryPage(List<GalleryPage> galleryPages) {
+        if (Util.isCollectionEmpty(galleryPages)) {
+            return;
+        }
+        try {
+            Dao dao = DatabaseHelper.getInstance().getDao(GalleryPage.class);
+
+            List<GalleryPage> all = queryAllGalleryPage();
+            if (Util.isCollectionEmpty(all)) {
+                //数据库为空，直接插入
+                for (GalleryPage item : galleryPages) {
+                    try {
+                        int id = dao.create(item);
+                        item.setId(id);
+                    } catch (SQLException e) {
+                        Log.w(OfflineManager.class.getSimpleName(), "saveGalleryPage 插入item[" + item.getTitle() + "]失败");
+                    }
+                }
+            } else {
+                //数据库不为空，进行对比筛选
+                for (GalleryPage item : galleryPages) {
+                    GalleryPage existItem = getExistItem(all, item);
+                    if(existItem == null){
+                        //说明数据库中没有这一条记录，直接插入
+                        int id = dao.create(item);
+                        item.setId(id);
+                    }else{
+                        item.setId(existItem.getId());
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.w(OfflineManager.class.getSimpleName(), "saveGalleryPage 获取DAO[" + GalleryPage.class.getSimpleName() + "]失败");
+        }
+    }
+
+    private GalleryPage getExistItem(List<GalleryPage> all, GalleryPage item) {
+        for (GalleryPage galleryPage : all) {
+            if (item.equals(galleryPage)) {
+                return galleryPage;
+            }
+        }
+        return null;
+    }
+
+    public List<GalleryItem> queryAllGalleryItem() {
+        try {
+            Dao dao = DatabaseHelper.getInstance().getDao(GalleryItem.class);
+            return dao.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void saveGalleryItem(List<GalleryItem> galleryItems) {
+        if (Util.isCollectionEmpty(galleryItems)) {
+            return;
+        }
+        try {
+            Dao dao = DatabaseHelper.getInstance().getDao(GalleryItem.class);
+
+            List<GalleryItem> all = queryAllGalleryItem();
+            if (Util.isCollectionEmpty(all)) {
+                //数据库为空，直接插入
+                for (GalleryItem item : galleryItems) {
+                    try {
+                        dao.create(item);
+                    } catch (SQLException e) {
+                        Log.w(OfflineManager.class.getSimpleName(), "saveGalleryItem 插入item[" + item.getTitle() + "]失败");
+                    }
+                }
+            } else {
+                //数据库不为空，进行对比筛选
+                for (GalleryItem item : galleryItems) {
+                    GalleryItem existItem = getExistItem(all, item);
+                    if(existItem == null){
+                        //说明数据库中没有这一条记录，直接插入
+                        int id = dao.create(item);
+                        item.setId(id);
+                    }else{
+                        item.setId(existItem.getId());
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.w(OfflineManager.class.getSimpleName(), "saveGalleryItem 获取DAO[" + GalleryItem.class.getSimpleName() + "]失败");
+        }
+    }
+
+    private GalleryItem getExistItem(List<GalleryItem> all, GalleryItem item) {
+        for (GalleryItem galleryItem : all) {
+            if (item.equals(galleryItem)) {
+                return galleryItem;
+            }
+        }
+        return null;
+    }
+
+}

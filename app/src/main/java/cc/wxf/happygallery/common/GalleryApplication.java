@@ -18,5 +18,7 @@ public class GalleryApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        //初始化数据库
+        DatabaseHelper.getInstance().init();
     }
 }

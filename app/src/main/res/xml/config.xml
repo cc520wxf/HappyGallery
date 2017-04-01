@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <array>
     <map>
+        <entry key="id">1</entry>
         <entry key="name">今日囧图</entry>
         <entry key="url">http://tu.duowan.com/tag/5037.html</entry>
         <entry key="icon">launch_icon1</entry>
     </map>
 
     <map>
+        <entry key="id">2</entry>
         <entry key="name">搞笑GIF</entry>
         <entry key="url">http://tu.duowan.com/m/bxgif</entry>
         <entry key="icon">launch_icon2</entry>
     </map>
 
     <map>
+        <entry key="id">3</entry>
         <entry key="name">美女图片</entry>
         <entry key="url">http://tu.duowan.com/m/meinv</entry>
         <entry key="icon">launch_icon3</entry>
     </map>
 
     <map>
+        <entry key="id">4</entry>
         <entry key="name">吐槽囧图</entry>
         <entry key="url">http://tu.duowan.com/m/tucao</entry>
         <entry key="icon">launch_icon4</entry>
     </map>
 
     <map>
+        <entry key="id">5</entry>
         <entry key="name">冷知识</entry>
         <entry key="url">http://tu.duowan.com/tag/20721.html</entry>
         <entry key="icon">launch_icon5</entry>
     </map>
 
     <map>
+        <entry key="id">6</entry>
         <entry key="name">冷笑话</entry>
         <entry key="url">http://tu.duowan.com/tag/25047.html</entry>
         <entry key="icon">launch_icon6</entry>

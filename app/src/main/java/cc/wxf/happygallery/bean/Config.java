@@ -21,10 +21,19 @@ public class Config implements Serializable{
     private static final String TAG_ARRAY = "array";
     private static final String TAG_ENTRY = "entry";
 
+    private int id;
     private String name;
     private String url;
     private String icon;
     private transient Bitmap bitmap;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Bitmap getBitmap() {
         return bitmap;
@@ -86,6 +95,8 @@ public class Config implements Serializable{
                                 config.setIcon(value);
                                 //将处理过的Bitmap放入
                                 config.setBitmap(Util.getReverseBitmapById(Util.getDrawableByName(context, value), context));
+                            }else if(key.equals("id")){
+                                config.setId(Integer.parseInt(value));
                             }
                         }
                         break;

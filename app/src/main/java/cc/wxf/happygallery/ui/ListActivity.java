@@ -16,6 +16,7 @@ import cc.wxf.happygallery.adapter.ListAdapter;
 import cc.wxf.happygallery.bean.Config;
 import cc.wxf.happygallery.bean.GalleryPage;
 import cc.wxf.happygallery.manager.ListManager;
+import cc.wxf.happygallery.manager.OfflineManager;
 
 /**
  * Created by cc520wxf on 2017/3/29.
@@ -97,6 +98,12 @@ public class ListActivity extends ImmerseActivity {
                 loadMoreView.setVisibility(View.GONE);
                 galleryPages.addAll(pages);
                 adapter.notifyDataSetChanged();
+                //保存Config外链
+                for(GalleryPage item : pages){
+                    item.setConfigId(config.getId());
+                }
+                //插入数据库
+                OfflineManager.getInstance().saveGalleryPage(pages);
             }
 
             @Override

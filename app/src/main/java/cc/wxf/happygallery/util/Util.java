@@ -21,6 +21,7 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -180,5 +181,15 @@ public class Util {
         DisplayMetrics dm = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
         return new int[]{dm.widthPixels, dm.heightPixels};
+    }
+
+    public static boolean isCollectionEmpty(Collection collection){
+        if(collection == null){
+            return true;
+        }
+        if(collection.isEmpty()){
+            return true;
+        }
+        return false;
     }
 }

@@ -15,6 +15,7 @@ import cc.wxf.happygallery.bean.GalleryItem;
 import cc.wxf.happygallery.bean.GalleryPage;
 import cc.wxf.happygallery.manager.DialogManager;
 import cc.wxf.happygallery.manager.ImageManager;
+import cc.wxf.happygallery.manager.OfflineManager;
 
 /**
  * Created by chenchen on 2017/3/31.
@@ -101,6 +102,12 @@ public class ImageActivity extends ImmerseActivity {
             public void onSuccess(List<GalleryItem> galleryItems) {
                 loadingView.setVisibility(View.GONE);
                 webView.setVisibility(View.VISIBLE);
+                //保存外链
+                for(GalleryItem item : galleryItems){
+                    item.setPageId(galleryPage.getId());
+                }
+                //插入数据库
+                OfflineManager.getInstance().saveGalleryItem(galleryItems);
                 String html = ImageManager.getInstance().createHTML(ImageActivity.this, galleryItems);
                 webView.loadData(html, "text/html; charset=UTF-8", "utf-8");
             }
