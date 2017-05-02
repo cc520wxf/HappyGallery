@@ -100,7 +100,7 @@ public class ParsePageThread extends Thread {
         if(divItems != null && divItems.size() > 0){
             for(Element divItem : divItems){
                 try{
-                    String imgUrl = divItem.select("img").get(0).attr("src");
+                    String imgUrl = divItem.select("span.pic-box-item").get(0).attr("data-img");
                     String title = divItem.select("p.comment").get(0).text();
                     GalleryItem galleryItem = new GalleryItem();
                     galleryItem.setImgUrl(imgUrl);
