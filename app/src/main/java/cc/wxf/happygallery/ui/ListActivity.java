@@ -50,6 +50,7 @@ public class ListActivity extends ImmerseActivity {
         ListManager.getInstance().setCurrentPage(1);
         parseList();
         initBanner();
+        AdManager.showInterteristalAD(this);
     }
 
     private void initBanner() {
@@ -168,4 +169,5 @@ public class ListActivity extends ImmerseActivity {
             galleryPages.addAll(OfflineManager.getInstance().queryAllGalleryPage(config));
         }
     }
+
 }

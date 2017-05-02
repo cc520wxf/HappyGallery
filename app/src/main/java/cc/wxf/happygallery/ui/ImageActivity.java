@@ -14,6 +14,7 @@ import java.util.List;
 import cc.wxf.happygallery.R;
 import cc.wxf.happygallery.bean.GalleryItem;
 import cc.wxf.happygallery.bean.GalleryPage;
+import cc.wxf.happygallery.manager.AdManager;
 import cc.wxf.happygallery.manager.DialogManager;
 import cc.wxf.happygallery.manager.ImageManager;
 import cc.wxf.happygallery.manager.OfflineManager;
@@ -39,6 +40,7 @@ public class ImageActivity extends ImmerseActivity {
         initLoading();
         initWebView();
         initParse();
+        AdManager.showInterteristalAD(this);
     }
 
     private void initWebView() {
@@ -148,4 +150,5 @@ public class ImageActivity extends ImmerseActivity {
             galleryItems.addAll(OfflineManager.getInstance().queryAllGalleryItem(galleryPage));
         }
     }
+
 }
