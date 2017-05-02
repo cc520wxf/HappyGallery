@@ -26,6 +26,9 @@ public class AdManager {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                if(activity.isFinishing()){
+                    return;
+                }
                 final InterstitialAD ad = new InterstitialAD(activity, APP_ID, INTERTERISTAL_ID);
                 ad.setADListener(new AbstractInterstitialADListener() {
                     @Override

@@ -99,7 +99,17 @@ public class ImageActivity extends ImmerseActivity {
             @Override
             public void onClick(View v) {
                 if(galleryPage != null && !Util.isCollectionEmpty(galleryItems)){
-                    ImageManager.getInstance().downloadBatchImage(ImageActivity.this, galleryPage, galleryItems);
+                    DialogManager.getInstance().showDownloadDialog(ImageActivity.this, new DialogManager.Callback() {
+                        @Override
+                        public void confirm() {
+                            ImageManager.getInstance().downloadBatchImage(ImageActivity.this, galleryPage, galleryItems);
+                        }
+
+                        @Override
+                        public void cancle() {
+                            //do nothing
+                        }
+                    });
                 }else{
                     Toast.makeText(ImageActivity.this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
                 }
