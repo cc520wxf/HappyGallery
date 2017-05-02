@@ -5,8 +5,14 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.qq.e.ads.banner.ADSize;
+import com.qq.e.ads.banner.AbstractBannerADListener;
+import com.qq.e.ads.banner.BannerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +21,7 @@ import cc.wxf.happygallery.R;
 import cc.wxf.happygallery.adapter.ListAdapter;
 import cc.wxf.happygallery.bean.Config;
 import cc.wxf.happygallery.bean.GalleryPage;
+import cc.wxf.happygallery.manager.AdManager;
 import cc.wxf.happygallery.manager.ListManager;
 import cc.wxf.happygallery.manager.OfflineManager;
 import cc.wxf.happygallery.util.Util;
@@ -42,6 +49,37 @@ public class ListActivity extends ImmerseActivity {
         initRecyclerView();
         ListManager.getInstance().setCurrentPage(1);
         parseList();
+        initBanner();
+    }
+
+    private void initBanner() {
+        final ImageView bannerClose = (ImageView) findViewById(R.id.banner_close);
+        final ViewGroup bannerContainer = (ViewGroup) findViewById(R.id.bannerContainer);
+        final BannerView bannerView = new BannerView(this, ADSize.BANNER, AdManager.APP_ID, AdManager.BANNER_ID);
+        bannerView.setRefresh(30);
+        bannerView.setADListener(new AbstractBannerADListener() {
+            @Override
+            public void onNoAD(int i) {
+                bannerClose.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onADReceiv() {
+                bannerClose.setVisibility(View.VISIBLE);
+                bannerClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bannerClose.setVisibility(View.GONE);
+                        bannerContainer.removeAllViews();
+                        if(bannerView != null){
+                            bannerView.destroy();
+                        }
+                    }
+                });
+            }
+        });
+        bannerContainer.addView(bannerView);
+        bannerView.loadAD();
     }
 
     private void initLoading() {

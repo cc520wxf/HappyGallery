@@ -15,7 +15,6 @@ import java.util.List;
 import cc.wxf.happygallery.bean.GalleryItem;
 import cc.wxf.happygallery.bean.GalleryPage;
 import cc.wxf.happygallery.manager.ImageManager;
-import cc.wxf.happygallery.manager.ListManager;
 import cc.wxf.happygallery.util.Util;
 
 /**
@@ -52,7 +51,7 @@ public class ParsePageThread extends Thread {
     private void parse(int page, boolean needQueryPageSize, boolean shouldThrowException){
         String url = Util.getPageUrl(galleryPage, page);
         try {
-            Document document = Jsoup.connect(url).userAgent(ListManager.USER_AGENT).ignoreContentType(true).timeout(ListManager.TIME_OUT).post();
+            Document document = Jsoup.connect(url).userAgent(ImageManager.USER_AGENT).ignoreContentType(true).timeout(ImageManager.TIME_OUT).post();
             if(document != null){
                 //可能会有不同的模板，排除这个模板
                 try {

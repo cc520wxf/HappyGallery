@@ -15,4 +15,7 @@
     <string name="dialog_download_confirm">下载</string>
     <string name="dialog_download_cancle">取消</string>
     <string name="operate_save_batch">一键保存</string>
+    <string name="click_to_skip">点击跳过</string>
+    <string name="app_desc">提供优质图片，开心您的生活</string>
+    <string name="skip_text">点击跳过 %1$d</string>
 </resources>
