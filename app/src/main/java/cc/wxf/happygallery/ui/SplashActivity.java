@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.qq.e.ads.splash.SplashAD;
-import com.qq.e.ads.splash.SplashADListener;
-
 import cc.wxf.happygallery.R;
 import cc.wxf.happygallery.manager.AdManager;
 
@@ -32,33 +29,20 @@ public class SplashActivity extends FullScreenActivity {
         ViewGroup container = (ViewGroup) this.findViewById(R.id.splash_container);
         final TextView skipView = (TextView) findViewById(R.id.skip_view);
         final View splashHolder = findViewById(R.id.splash_holder);
-        new SplashAD(this, container, skipView, AdManager.APP_ID, AdManager.SPLASH_ID, new SplashADListener() {
-            @Override
-            public void onADDismissed() {
-                next();
-            }
+        AdManager.showSplashAD(this, container, skipView, splashHolder, 0);
+        //如果未开启广告，则直接跳转
+        if(!AdManager.isOpenAd()){
+            startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+            finish();
+        }
+    }
 
-            @Override
-            public void onNoAD(int i) {
-                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-                finish();
-            }
+    public boolean isCanJump() {
+        return canJump;
+    }
 
-            @Override
-            public void onADPresent() {
-                splashHolder.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onADClicked() {
-
-            }
-
-            @Override
-            public void onADTick(long millisUntilFinished) {
-                skipView.setText(String.format(getString(R.string.skip_text), Math.round(millisUntilFinished / 1000f)));
-            }
-        }, 0);
+    public void setCanJump(boolean canJump) {
+        this.canJump = canJump;
     }
 
     @Override

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">开心图库</string>
+    <string name="app_name">开心图源</string>
     <string name="back">返回</string>
     <string name="parse_error">数据请求错误，错误码为%1$d</string>
     <string name="unknown_error">未知错误</string>
