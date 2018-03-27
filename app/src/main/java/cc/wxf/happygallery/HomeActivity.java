@@ -10,6 +10,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //变动后，该版本为v1.0.0
+        //变动后，该版本为v1.0.1
     }
 }
